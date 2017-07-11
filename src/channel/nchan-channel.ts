@@ -78,7 +78,7 @@ export class NchanChannel extends Channel {
      */
     on(event: string, callback: Function): void {
         let listener = (data) => {
-            if (this.name == data.channel) {
+            if (data.channels.indexOf(this.name) > -1) {
                 callback(data);
             }
         };

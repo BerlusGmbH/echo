@@ -771,7 +771,7 @@ var NchanChannel = function (_Channel) {
             var _this2 = this;
 
             var listener = function listener(data) {
-                if (_this2.name == data.channel) {
+                if (data.channels.indexOf(_this2.name) > -1) {
                     callback(data);
                 }
             };
