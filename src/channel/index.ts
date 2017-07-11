@@ -1,4 +1,7 @@
 export * from './channel';
+export * from './nchan-channel';
+export * from './nchan-private-channel';
+export * from './nchan-presence-channel';
 export * from './presence-channel';
 export * from './pusher-channel';
 export * from './pusher-private-channel';
