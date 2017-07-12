@@ -23,6 +23,20 @@ export class NchanConnector extends Connector {
 
     booted: boolean = false;
 
+    /**
+     * Connect to Nchan Server start listening for subscribed channels.
+     *
+     * @return void
+     */
+    connect(): void {
+        if(this.hasChannels()) {
+            if(this.isConnected()) {
+                this.disconnect();
+            }
+            this.connectSocket();
+        }
+    }
+
     connectSocket: Function = this.debounce(function() {
         let url:string = this.options.host + '?channels=' + this.getChannelNames();
         url = NchanConnector.websocketizeURL(url);
@@ -30,27 +44,6 @@ export class NchanConnector extends Connector {
         this.socket = new WebSocket(url, 'ws+meta.nchan');
         this.socket.onmessage = this.onMessage.bind(this);
     }, 100, false);
-
-    constructor(options: any) {
-        super(options);
-        this.booted = true;
-        this.connect();
-    }
-
-    /**
-     * Connect to Nchan Server start listening for subscribed channels.
-     *
-     * @return void
-     */
-    connect(): void {
-        if(!this.booted) {
-            return;
-        }
-        if(this.isConnected()) {
-            this.disconnect();
-        }
-        this.connectSocket();
-    }
 
     /**
      * Listen for an event on a channel instance.
@@ -233,6 +226,10 @@ export class NchanConnector extends Connector {
         return Object.keys(this.channels).map(function (key: string) {
             return this.channels[key].name;
         }, this).join(',');
+    }
+
+    hasChannels() {
+        return Object.keys(this.channels).length > 0;
     }
 
     debounce(func: Function, wait: number, immediate: boolean): Function {
