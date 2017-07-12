@@ -1270,7 +1270,6 @@ var NchanConnector = function (_Connector) {
         _this.lastMessageId = Math.floor(Date.now() / 1000) + ':-,[0]';
         _this.booted = false;
         _this.connectSocket = _this.debounce(function () {
-            this.channel('global');
             var url = this.options.host + '?channels=' + this.getChannelNames();
             url = NchanConnector.websocketizeURL(url);
             url = NchanConnector.addLastMsgIdToQueryString(url, this.lastMessageId);

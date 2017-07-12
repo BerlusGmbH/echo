@@ -24,7 +24,6 @@ export class NchanConnector extends Connector {
     booted: boolean = false;
 
     connectSocket: Function = this.debounce(function() {
-        this.channel('global');
         let url:string = this.options.host + '?channels=' + this.getChannelNames();
         url = NchanConnector.websocketizeURL(url);
         url = NchanConnector.addLastMsgIdToQueryString(url, this.lastMessageId);
