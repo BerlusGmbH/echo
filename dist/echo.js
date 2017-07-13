@@ -1260,10 +1260,16 @@ var SocketIoConnector = function (_Connector) {
 var NchanConnector = function (_Connector) {
     inherits(NchanConnector, _Connector);
 
-    function NchanConnector(options) {
+    function NchanConnector() {
+        var _ref;
+
         classCallCheck(this, NchanConnector);
 
-        var _this = possibleConstructorReturn(this, (NchanConnector.__proto__ || Object.getPrototypeOf(NchanConnector)).call(this, options));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var _this = possibleConstructorReturn(this, (_ref = NchanConnector.__proto__ || Object.getPrototypeOf(NchanConnector)).call.apply(_ref, [this].concat(args)));
 
         _this.socket = null;
         _this.channels = {};
@@ -1276,21 +1282,18 @@ var NchanConnector = function (_Connector) {
             this.socket = new WebSocket(url, 'ws+meta.nchan');
             this.socket.onmessage = this.onMessage.bind(this);
         }, 100, false);
-        _this.booted = true;
-        _this.connect();
         return _this;
     }
 
     createClass(NchanConnector, [{
         key: "connect",
         value: function connect() {
-            if (!this.booted) {
-                return;
+            if (this.hasChannels()) {
+                if (this.isConnected()) {
+                    this.disconnect();
+                }
+                this.connectSocket();
             }
-            if (this.isConnected()) {
-                this.disconnect();
-            }
-            this.connectSocket();
         }
     }, {
         key: "listen",
@@ -1382,6 +1385,11 @@ var NchanConnector = function (_Connector) {
             return Object.keys(this.channels).map(function (key) {
                 return this.channels[key].name;
             }, this).join(',');
+        }
+    }, {
+        key: "hasChannels",
+        value: function hasChannels() {
+            return Object.keys(this.channels).length > 0;
         }
     }, {
         key: "debounce",
