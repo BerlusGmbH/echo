@@ -12,7 +12,7 @@ export class NchanPrivateChannel extends NchanChannel {
      * @return {NchanPrivateChannel}
      */
     whisper(eventName, data): NchanPrivateChannel {
-        this.socket.send(JSON.stringify({
+        this.connector.socket.send(JSON.stringify({
             channel: this.name,
             event: `client-${eventName}`,
             data: data

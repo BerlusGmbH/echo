@@ -745,13 +745,13 @@ function unwrapListeners(arr) {
 var NchanChannel = function (_Channel) {
     inherits(NchanChannel, _Channel);
 
-    function NchanChannel(socket, name, options) {
+    function NchanChannel(connector, name, options) {
         classCallCheck(this, NchanChannel);
 
         var _this = possibleConstructorReturn(this, (NchanChannel.__proto__ || Object.getPrototypeOf(NchanChannel)).call(this));
 
-        _this.socket = null;
-        _this.socket = socket;
+        _this.connector = null;
+        _this.connector = connector;
         _this.name = name;
         _this.options = options;
         _this.eventFormatter = new EventFormatter(_this.options.namespace);
@@ -792,7 +792,7 @@ var NchanPrivateChannel = function (_NchanChannel) {
     createClass(NchanPrivateChannel, [{
         key: 'whisper',
         value: function whisper(eventName, data) {
-            this.socket.send(JSON.stringify({
+            this.connector.socket.send(JSON.stringify({
                 channel: this.name,
                 event: 'client-' + eventName,
                 data: data
@@ -1303,10 +1303,8 @@ var NchanConnector = function (_Connector) {
         key: "channel",
         value: function channel(name) {
             if (!this.channels[name]) {
-                this.channels[name] = new NchanChannel(this.socket, name, this.options);
-                if (this.isConnected()) {
-                    this.connect();
-                }
+                this.channels[name] = new NchanChannel(this, name, this.options);
+                this.connect();
             }
             return this.channels[name];
         }
@@ -1314,10 +1312,8 @@ var NchanConnector = function (_Connector) {
         key: "privateChannel",
         value: function privateChannel(name) {
             if (!this.channels['private-' + name]) {
-                this.channels['private-' + name] = new NchanPrivateChannel(this.socket, 'private-' + name, this.options);
-                if (this.isConnected()) {
-                    this.connect();
-                }
+                this.channels['private-' + name] = new NchanPrivateChannel(this, 'private-' + name, this.options);
+                this.connect();
             }
             return this.channels['private-' + name];
         }
@@ -1325,10 +1321,8 @@ var NchanConnector = function (_Connector) {
         key: "presenceChannel",
         value: function presenceChannel(name) {
             if (!this.channels['presence-' + name]) {
-                this.channels['presence-' + name] = new NchanPresenceChannel(this.socket, 'presence-' + name, this.options);
-                if (this.isConnected()) {
-                    this.connect();
-                }
+                this.channels['presence-' + name] = new NchanPresenceChannel(this, 'presence-' + name, this.options);
+                this.connect();
             }
             return this.channels['presence-' + name];
         }

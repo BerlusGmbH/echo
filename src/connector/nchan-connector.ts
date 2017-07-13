@@ -64,13 +64,11 @@ export class NchanConnector extends Connector {
     channel(name: string): NchanChannel {
         if (!this.channels[name]) {
             this.channels[name] = new NchanChannel(
-                this.socket,
+                this,
                 name,
                 this.options
             );
-            if(this.isConnected()) {
-                this.connect();
-            }
+            this.connect();
         }
 
         return this.channels[name];
@@ -85,13 +83,11 @@ export class NchanConnector extends Connector {
     privateChannel(name: string): NchanChannel {
         if (!this.channels['private-' + name]) {
             this.channels['private-' + name] = new NchanPrivateChannel(
-                this.socket,
+                this,
                 'private-' + name,
                 this.options
             );
-            if(this.isConnected()) {
-                this.connect();
-            }
+            this.connect();
         }
 
         return this.channels['private-' + name];
@@ -106,13 +102,11 @@ export class NchanConnector extends Connector {
     presenceChannel(name: string): PresenceChannel {
         if (!this.channels['presence-' + name]) {
             this.channels['presence-' + name] = new NchanPresenceChannel(
-                this.socket,
+                this,
                 'presence-' + name,
                 this.options
             );
-            if(this.isConnected()) {
-                this.connect();
-            }
+            this.connect();
         }
 
         return this.channels['presence-' + name];

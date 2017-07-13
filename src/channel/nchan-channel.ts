@@ -1,6 +1,7 @@
 import { EventFormatter } from './../util';
 import { Channel } from './channel';
 import { EventEmitter } from "events";
+import {NchanConnector} from "../connector/nchan-connector";
 
 /**
  * This class represents a Socket.io channel.
@@ -9,9 +10,9 @@ export class NchanChannel extends Channel {
     /**
      * The Socket.io client instance.
      *
-     * @type {WebSocket}
+     * @type {NchanConnector}
      */
-    socket: WebSocket = null;
+    connector: NchanConnector = null;
 
     /**
      * The name of the channel.
@@ -44,14 +45,14 @@ export class NchanChannel extends Channel {
     /**
      * Create a new class instance.
      *
-     * @param  {WebSocket} socket
+     * @param  {NchanConnector} connector
      * @param  {string} name
      * @param  {any} options
      */
-    constructor(socket: WebSocket, name: string, options: any) {
+    constructor(connector: NchanConnector, name: string, options: any) {
         super();
 
-        this.socket = socket;
+        this.connector = connector;
         this.name = name;
         this.options = options;
         this.eventFormatter = new EventFormatter(this.options.namespace);
