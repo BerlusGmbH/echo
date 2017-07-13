@@ -1274,7 +1274,6 @@ var NchanConnector = function (_Connector) {
         _this.socket = null;
         _this.channels = {};
         _this.lastMessageId = Math.floor(Date.now() / 1000) + ':-,[0]';
-        _this.booted = false;
         _this.connectSocket = _this.debounce(function () {
             var url = this.options.host + '?channels=' + this.getChannelNames();
             url = NchanConnector.websocketizeURL(url);
@@ -1389,6 +1388,9 @@ var NchanConnector = function (_Connector) {
     }, {
         key: "hasChannels",
         value: function hasChannels() {
+            if (!this.channels) {
+                return false;
+            }
             return Object.keys(this.channels).length > 0;
         }
     }, {

@@ -21,8 +21,6 @@ export class NchanConnector extends Connector {
 
     lastMessageId: string = Math.floor(Date.now() / 1000) + ':-,[0]';
 
-    booted: boolean = false;
-
     /**
      * Connect to Nchan Server start listening for subscribed channels.
      *
@@ -229,6 +227,9 @@ export class NchanConnector extends Connector {
     }
 
     hasChannels() {
+        if(!this.channels) {
+            return false;
+        }
         return Object.keys(this.channels).length > 0;
     }
 
