@@ -19,7 +19,7 @@ export class NchanConnector extends Connector {
      */
     channels: any = {};
 
-    lastMessageId: string = Math.floor(Date.now() / 1000) + ':-,[0]';
+    lastMessageId: string = '';
 
     /**
      * Connect to Nchan Server start listening for subscribed channels.
